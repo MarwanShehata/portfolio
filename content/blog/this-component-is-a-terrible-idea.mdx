@@ -1,0 +1,158 @@
+---
+title: This Feature is a Terrible Idea (Yalahwy!)
+description: Last sprint, I refactored a legacy module for what felt like 5,300 story points. I used about 70% of the budget to build a new feature for a client. Then I asked my team what to do with the reusable parts.
+date: 05-30-2025
+---
+
+Last sprint, I refactored a legacy module for what felt like 5,300 story points. And I used about 70% of it to build this fancy new feature for a client in production. There's a whole pull request about it. You can review it after this one if you want. Anyway, in that PR, I asked all of you what you thought I should do with the leftover code.
+
+I showed these two API designs and asked you to vote in the comments. Sounds like a pretty straightforward A or B choice, right?
+
+```tsx
+// Option A: Simple and Clean (Codename: Lovely)
+// The component handles its own data fetching.
+function Page() {
+  return <UserProfile id="123" />;
+}
+```
+
+```tsx
+// Option B: Detailed and Powerful (Codename: Fantastic)
+// The component is 'dumb' and requires data to be passed in.
+function Page() {
+  const user = useUser("123");
+  return <UserProfile user={user} />;
+}
+```
+
+But then something unexpected happened. Instead of just picking A or B, a ton of you ya gama3a, wrote in with a third option. And I'm not saying like 12 of you wrote in with 12 random ideas. I'm saying hundreds of you wrote in with literally the exact same idea. In fact, looking at these two designs side by side, you could probably guess what it was.
+
+Make it do *both*.
+
+And I thought, you know what? *Yalahwityyy!* That actually sounds like a terrible idea.
+
+Let's give it a shot.
+
+So, I should clarify two things. First, when people said make the component "flippable," I'm going to assume that they meant it should conditionally handle both data fetching and prop passing, not that the UI should literally flip. And second, when I said that sounds like a terrible idea, what I actually meant was it's one of those ideas that might sound good at first, but the more you think about it, the more it kind of falls apart. Like, I had this buddy in college who thought he had this million-dollar idea for an all-in-one JavaScript toolchain. He wanted to weld a linter, formatter, and bundler together. He was convinced he was a genius, a real *fahlawy*. And I could see where you might hear that idea at first and think that it's halfway decent... until you realize that's basically what **Biome** is, and they actually pulled it off. But my buddy's implementation was destined to be a worse linter, a worse formatter, and cause a bunch of merge conflicts in that tender no man's land between your feature branch and `main`.
+
+All that said, I'm not going to let that sway me. It doesn't matter if this is a good or a bad idea. What matters is that I was challenged to try it. So, I am legitimately going to try my hardest to make this feature the best it possibly can be in both configurations.
+
+Here's my suspicion. People voted for a flippable component not because they would rather *use* one, but because they would rather watch one being *built*. Like imagine if I put up a poll where I asked, "Should I code with a mechanical keyboard or a whole raw potato?" People would prefer to use the keyboard but see the potato, just like they'd rather use a normal component but see a flippable one. It's like choosing between a shish tawook sandwich and eating *feseekh* for the first time. You know what you prefer, but you're curious about the other thing, even if it might end badly.
+
+So basically, I guess what I'm getting at is thanks to people's morbid curiosity, here I am with like 1,200 story points in effort and hours of work dedicated to building the software equivalent of a raw potato. And the best part is, these "raw potato" features are all over this very portfolio.
+
+For example, take the content pipeline in `content-collections.ts`. It looks simple on the surface, but the `transform` function is doing some serious heavy lifting. It's taking raw MDX, compiling it with remark and rehype plugins for GFM, headings, and code blocks with syntax highlighting themes. This is way more complex than just fetching a string from a file.
+
+```tsx
+// content-collections.ts
+import { defineCollection, defineConfig } from '@content-collections/core'
+import { compileMDX } from '@content-collections/mdx'
+import {
+	type RehypeCodeOptions,
+	rehypeCode,
+	remarkGfm,
+	remarkHeading,
+} from 'fumadocs-core/mdx-plugins'
+import readingTime from 'reading-time'
+
+const rehypeCodeOptions: RehypeCodeOptions = {
+	themes: {
+		light: 'github-light',
+		dark: 'github-dark-default',
+	},
+}
+
+const posts = defineCollection({
+	name: 'posts',
+	directory: 'content',
+	include: 'blog/*.mdx',
+	schema: (z) => ({
+		title: z.string(),
+		description: z.string(),
+		date: z.coerce.date(),
+		image: z.string().optional(),
+	}),
+	transform: async (page, context) => {
+		const body = await compileMDX(context, page, {
+			remarkPlugins: [remarkGfm],
+			rehypePlugins: [[rehypeCode, rehypeCodeOptions], remarkHeading],
+		})
+
+		return {
+			...page,
+			body,
+			slug: page._meta.path,
+			readingTime: readingTime(page.content).text,
+		}
+	},
+})
+```
+
+But that's just the appetizer. The main course of this raw potato meal is the dynamic Open Graph image generation in `app/og/route.tsx`. This thing runs on the edge, dynamically fetches fonts from Google based on the title and description, uses a regex to parse the font CSS, reads my avatar image from the filesystem as a raw buffer, and then constructs a new image on the fly using `ImageResponse`. It's complex, brittle, and a perfect example of a feature that's cool to build but probably overkill for most projects. It's a real *mawal*.
+
+```tsx
+// app/og/route.tsx
+import { readFile } from 'node:fs/promises'
+import { join } from 'node:path'
+import { ImageResponse } from 'next/og'
+import type { NextRequest } from 'next/server'
+
+const FONT_RESOURCE_REGEX = /src: url\((.+)\) format\('(opentype|truetype)'\)/
+
+const loadGoogleFont = async (font: string, text: string, weights: string) => {
+	const url = `https://fonts.googleapis.com/css2?family=${font}:wght@${weights}&text=${encodeURIComponent(text)}`
+	const css = await (await fetch(url)).text()
+	const resource = css.match(FONT_RESOURCE_REGEX)
+
+	if (resource) {
+		const response = await fetch(resource[1])
+		if (response.status === 200) {
+			return await response.arrayBuffer()
+		}
+	}
+
+	throw new Error('failed to load font data')
+}
+
+export const GET = async (request: NextRequest) => {
+	const title = request.nextUrl.searchParams.get('title')
+	const description = request.nextUrl.searchParams.get('description')
+
+	const avatarData = await readFile(
+		join(process.cwd(), 'app/(home)/avatar.jpg'),
+	)
+	const avatarSrc = Uint8Array.from(avatarData).buffer
+
+	return new ImageResponse(
+		<div tw='...'>
+			{/* JSX for the image */}
+		</div>,
+		{
+			width: 1200,
+			height: 630,
+			fonts: [
+				{
+					name: 'Geist',
+					data: await loadGoogleFont('Geist', title ?? '', '700'),
+					style: 'normal',
+					weight: 700,
+				},
+				{
+					name: 'Geist',
+					data: await loadGoogleFont('Geist', description ?? '', '400'),
+					style: 'normal',
+					weight: 400,
+				},
+			],
+		},
+	)
+}
+```
+
+Now, let's talk critiques. For **Lovely** (the component that fetches its own data), the number one complaint was some version of: "You're creating a request waterfall!" or "You're coupling your view to your data layer!" And they're not wrong.
+
+For **Fantastic** (the "dumb" component), the top complaint was: "Prop drilling hell!" And yeah, that's fair. It is basically the Mount Everest of prop drilling if you have a deep component tree.
+
+But that got me thinking. We need a name for this phenomenon where a person brings up a perfectly valid objection, but it's just one that the actual consumer of the feature would never care about. You could imagine you're walking down the street and you see a Lamborghini Diablo drive by. And most people's reaction is going to fall somewhere between indifference and, "Whoa, cool car." But there's always that one guy who's going to say something like, "Imagine the gas bill." And his objection is technically valid. I mean, they get about 9 miles per gallon. But you know who doesn't care about that?
+
+People who buy Lamborghinis. Trust me, nobody's cross-shopping a Lambo and a Prius. And nobody who wants a simple, self-contained component cares about request waterfalls. They just want the thing to work. *El Zatona*, as we say. The bottom line.
