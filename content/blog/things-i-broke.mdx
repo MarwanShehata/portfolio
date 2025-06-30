@@ -1,0 +1,49 @@
+---
+title: Things I Broke on the Way to Building This Site
+description: A personal journey through the mistakes, misconceptions, and over-engineering that led to this portfolio.
+date: 05-30-2025
+---
+
+I once tried to build a to-do list app that could sync with your brainwaves. It was going to be my magnum opus, the project that would finally make me a "real" developer. It had a serverless backend, a micro-frontend architecture, and a state management system that could probably handle Google's entire infrastructure.
+
+It never saw the light of day.
+
+This portfolio, on the other hand, is a testament to a different philosophy: shipping is better than perfection. It's a collection of lessons learned from years of breaking things, chasing trends, and writing code that was clever instead of clear.
+
+## The "TypeScript is Just JavaScript with Extra Steps" Phase
+
+I remember my first encounter with TypeScript. "Why would I need this?" I scoffed. "I know JavaScript." I was a `any` purist, a dynamic typing evangelist. I was also writing bugs that a simple type check would have caught.
+
+Then, one day, it clicked. I saw the light. And like any recent convert, I became a zealot. I typed everything. I created interfaces for my interfaces. I wrote utility types that were more complex than the functions they were supposed to be helping.
+
+<Callout type="info">
+  I spent a week trying to create a generic type that would infer the return type of a function that returned a promise that resolved to another function. I still don't know if I succeeded.
+</Callout>
+
+I learned that TypeScript is a tool, not a religion. It's there to help you, not to make your life harder. This project uses TypeScript, but it's pragmatic. It's here to prevent bugs, not to win a typing Olympics.
+
+## The "Architecture Astronaut" Phase
+
+I've rewritten the same project more times than I can count. Each time, I was convinced I had found the "perfect" architecture. I've used Redux for a simple counter. I've implemented a full-blown command bus for a contact form. I've even tried to build my own state management library (it did not go well).
+
+I was an architecture astronaut, floating in a sea of abstractions, completely detached from the reality of shipping a product. I was so focused on building the "right" way that I never actually built anything.
+
+This portfolio is built with Next.js, and that's about as far as the architectural decisions go. It's simple, it's maintainable, and it works.
+
+## The "My Linter Will Fix My Code" Phase
+
+I used to spend hours configuring my `eslintrc.js` file. I had rules for my rules. I had plugins for my plugins. I was convinced that if I could just get my tooling right, my code would magically become better.
+
+It's the developer equivalent of "fahlawa" – that Egyptian tendency to think you know a shortcut for everything. I thought I could outsmart my own bad habits with a clever `.prettierrc` file.
+
+<Tweet id="1854673441099800852" />
+
+I learned that tools are there to help you, not to do the work for you. A linter can catch a syntax error, but it can't teach you how to write good code. This project uses Biome, and it's great. It keeps my code consistent, and that's all I ask of it.
+
+## The "Enlightenment" Phase
+
+After years of chasing trends and over-engineering everything, I've finally come to a simple conclusion: clarity is king. I'd rather write code that's easy to understand than code that's clever. I'd rather ship a project than spend months perfecting it.
+
+This portfolio is a reflection of that philosophy. It's not going to win any awards for architectural innovation, but it's clean, it's maintainable, and it's mine. It's a reminder that the goal is to build things, not to build the perfect thing.
+
+And who knows, maybe one day I'll finally finish that brainwave-syncing to-do list app. But for now, I'm happy with this.
