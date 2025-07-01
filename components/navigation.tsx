@@ -8,66 +8,66 @@ import { usePathname } from 'next/navigation'
 import { LocalTime } from './local-time'
 
 const links = [
-	{
-		href: '/',
-		label: 'Home',
-		active: (pathname: string) => pathname === '/',
-	},
-	{
-		href: '/about',
-		label: 'About',
-		active: (pathname: string) => pathname.startsWith('/about'),
-	},
-	{
-		href: '/work',
-		label: 'Work',
-		active: (pathname: string) => pathname.startsWith('/work'),
-	},
-	{
-		href: '/projects',
-		label: 'Projects',
-		active: (pathname: string) => pathname.startsWith('/projects'),
-	},
-	{
-		href: '/blog',
-		label: 'Blog',
-		active: (pathname: string) => pathname.startsWith('/blog'),
-	},
-	{
-		href: '/contact',
-		label: 'Contact',
-		active: (pathname: string) => pathname.startsWith('/contact'),
-	},
+  {
+    href: '/',
+    label: 'Home',
+    active: (pathname: string) => pathname === '/',
+  },
+  {
+    href: '/about',
+    label: 'About',
+    active: (pathname: string) => pathname.startsWith('/about'),
+  },
+  {
+    href: '/work',
+    label: 'Work',
+    active: (pathname: string) => pathname.startsWith('/work'),
+  },
+  {
+    href: '/projects',
+    label: 'Projects',
+    active: (pathname: string) => pathname.startsWith('/projects'),
+  },
+  {
+    href: '/blog',
+    label: 'Blog',
+    active: (pathname: string) => pathname.startsWith('/blog'),
+  },
+  {
+    href: '/contact',
+    label: 'Contact',
+    active: (pathname: string) => pathname.startsWith('/contact'),
+  },
 ]
 
 export const Navigation = () => {
-	const pathname = usePathname()
+  const pathname = usePathname()
 
-	return (
-		<nav className='flex items-center justify-between text-xs'>
-			<div className='flex items-center gap-4'>
-				<LocalTime />
-				<Link
-					href={social.github.href}
-					className='text-secondary'
-					aria-label='GitHub'
-				>
-					<Github size={16} color='#fff' />
-				</Link>
-			</div>
-			<ul className='flex gap-4'>
-				{links.map(({ href, label, active }) => (
-					<li key={href}>
-						<Link
-							href={href}
-							className={cn(active(pathname) ? 'text-primary' : 'border-none')}
-							aria-label={label}
-						>
-							{label}
-						</Link>
-					</li>
-				))}
-			</ul>
-		</nav>
-	)
+  return (
+    <nav className='flex items-center justify-between text-xs'>
+      <div className='flex items-center gap-4'>
+        <LocalTime />
+        <Link
+          href={social.github.href}
+          className='text-secondary'
+          aria-label='GitHub'
+        >
+          <Github size={16} color='var(--color-foreground)' />
+        </Link>
+      </div>
+      <ul className='flex gap-4'>
+        {links.map(({ href, label, active }) => (
+          <li key={href}>
+            <Link
+              href={href}
+              className={cn(active(pathname) ? 'text-primary' : 'border-none')}
+              aria-label={label}
+            >
+              {label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
 }
