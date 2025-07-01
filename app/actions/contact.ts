@@ -8,7 +8,7 @@ import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 
 const verifyRecaptcha = async (token: string) => {
-	console.log(env)
+	// console.log(env)
 	const recaptchaUrl = new URL(
 		'https://www.google.com/recaptcha/api/siteverify',
 	)
@@ -41,8 +41,8 @@ export const contact = async (
 	const redis = Redis.fromEnv()
 	const ratelimit = new Ratelimit({
 		redis,
-		// rate limit to 1 request every day
-		limiter: Ratelimit.slidingWindow(1, '1d'),
+		// rate limit to 10 requests per hour
+		limiter: Ratelimit.slidingWindow(10, '1h'),
 	})
 
 	const { success } = await ratelimit.limit(`ratelimit_${ip}`)
@@ -83,7 +83,11 @@ export const contact = async (
 		}
 	}
 
-	await verifyRecaptcha(token)
+	const recaptchaResult = await verifyRecaptcha(token)
+
+	if (recaptchaResult?.error) {
+		return recaptchaResult
+	}
 
 	const response = await resend.emails.send({
 		from: env.RESEND_TO,

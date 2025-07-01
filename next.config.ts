@@ -3,6 +3,20 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
 	/* config options here */
+	async headers() {
+		return [
+			{
+				source: '/:path*',
+				headers: [
+					{
+						key: 'Content-Security-Policy',
+						value:
+							"frame-src 'self' https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/;",
+					},
+				],
+			},
+		]
+	},
 	images: {
 		remotePatterns: [
 			{
