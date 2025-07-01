@@ -12,6 +12,7 @@
 		"biome": "biome check"
 	},
 	"dependencies": {
+		"@react-email/components": "^0.1.1",
 		"@react-email/tailwind": "^1.0.5",
 		"@t3-oss/env-nextjs": "^0.12.0",
 		"@upstash/ratelimit": "^2.0.5",
