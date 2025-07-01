@@ -8,7 +8,7 @@ export const Footer = () => (
     </p>
     <p>
       View the{' '}
-      <Link href={social.github.href} aria-label='View source code on GitHub'>
+      <Link href={social.projectRepo.href} aria-label='View source code on GitHub'>
         source code
       </Link>
       .
