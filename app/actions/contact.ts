@@ -6,6 +6,7 @@ import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
+import { ContactEmail } from './emails/contact-email'
 
 // const verifyRecaptcha = async (token: string) => {
 // 	// console.log(env)
@@ -94,7 +95,7 @@ export const contact = async (
 		to: env.RESEND_TO,
 		subject: `New message from ${name}`,
 		replyTo: email,
-		text: message,
+		react: ContactEmail({ name, email, message }),
 	})
 
 	if (response.error) {
