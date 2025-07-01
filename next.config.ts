@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
 					{
 						key: 'Content-Security-Policy',
 						value:
-							"frame-src 'self' https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/;",
+							"frame-src 'self' https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://va.vercel-scripts.com;",
 					},
 				],
 			},

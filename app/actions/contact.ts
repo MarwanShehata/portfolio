@@ -7,27 +7,27 @@ import { Redis } from '@upstash/redis'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 
-const verifyRecaptcha = async (token: string) => {
-	// console.log(env)
-	const recaptchaUrl = new URL(
-		'https://www.google.com/recaptcha/api/siteverify',
-	)
-	recaptchaUrl.searchParams.set('secret', env.RECAPTCHA_SECRET_KEY)
-	recaptchaUrl.searchParams.set('response', token)
+// const verifyRecaptcha = async (token: string) => {
+// 	// console.log(env)
+// 	const recaptchaUrl = new URL(
+// 		'https://www.google.com/recaptcha/api/siteverify',
+// 	)
+// 	recaptchaUrl.searchParams.set('secret', env.RECAPTCHA_SECRET_KEY)
+// 	recaptchaUrl.searchParams.set('response', token)
 
-	const recaptchaResponse = await fetch(recaptchaUrl, {
-		method: 'POST',
-	})
+// 	const recaptchaResponse = await fetch(recaptchaUrl, {
+// 		method: 'POST',
+// 	})
 
-	const recaptchaJson = await recaptchaResponse.json()
+// 	const recaptchaJson = await recaptchaResponse.json()
 
-	if (!recaptchaJson.success) {
-		return {
-			error: 'Please verify that you are human.',
-			message: '',
-		}
-	}
-}
+// 	if (!recaptchaJson.success) {
+// 		return {
+// 			error: 'Please verify that you are human.',
+// 			message: '',
+// 		}
+// 	}
+// }
 
 export const contact = async (
 	formData: FormData,
@@ -76,21 +76,21 @@ export const contact = async (
 		}
 	}
 
-	if (typeof token !== 'string') {
-		return {
-			error: 'Please verify that you are human.',
-			message: '',
-		}
-	}
+	// if (typeof token !== 'string') {
+	// 	return {
+	// 		error: 'Please verify that you are human.',
+	// 		message: '',
+	// 	}
+	// }
 
-	const recaptchaResult = await verifyRecaptcha(token)
+	// const recaptchaResult = await verifyRecaptcha(token)
 
-	if (recaptchaResult?.error) {
-		return recaptchaResult
-	}
+	// if (recaptchaResult?.error) {
+	// 	return recaptchaResult
+	// }
 
 	const response = await resend.emails.send({
-		from: env.RESEND_TO,
+		from: 'onboarding@resend.dev',
 		to: env.RESEND_TO,
 		subject: `New message from ${name}`,
 		replyTo: email,
@@ -100,7 +100,7 @@ export const contact = async (
 	if (response.error) {
 		return {
 			error: response.error.message,
-			message: '',
+			message: `${response.error.message} Please try again later.`,
 		}
 	}
 

@@ -5,7 +5,6 @@ import { Input } from '@/components/input'
 import { Textarea } from '@/components/textarea'
 import { cn } from '@/lib/utils'
 import { ArrowRightIcon, Loader2Icon } from 'lucide-react'
-import { useReCaptcha } from 'next-recaptcha-v3'
 import { Form } from 'radix-ui'
 import { type FormEventHandler, useState } from 'react'
 import { toast } from 'sonner'
@@ -13,7 +12,6 @@ import { toast } from 'sonner'
 export const emailRegex = /.+@.+/u
 
 export const ContactForm = () => {
-	const { executeRecaptcha } = useReCaptcha()
 	const [loading, setLoading] = useState(false)
 
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
@@ -26,7 +24,6 @@ export const ContactForm = () => {
 		setLoading(true)
 
 		try {
-			const token = await executeRecaptcha('form_submit')
 			const form = event.target
 
 			if (!(form instanceof HTMLFormElement)) {
@@ -35,8 +32,6 @@ export const ContactForm = () => {
 			}
 
 			const formData = new FormData(form)
-
-			formData.append('token', token)
 
 			const response = await contact(formData)
 
@@ -98,7 +93,7 @@ export const ContactForm = () => {
 					disabled={loading}
 					className={cn(
 						'flex w-fit cursor-pointer select-none items-center justify-center gap-2 rounded-md bg-foreground px-3 py-2 text-background text-sm',
-						'g-recaptcha disabled:cursor-not-allowed disabled:opacity-50',
+						'disabled:cursor-not-allowed disabled:opacity-50',
 					)}
 					aria-label={loading ? 'Sending message...' : 'Send message'}
 				>

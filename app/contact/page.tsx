@@ -1,14 +1,12 @@
 import { Section } from '@/components/section'
-import { env } from '@/lib/env'
 import { createMetadata } from '@/lib/metadata'
 import type { Metadata } from 'next'
-import { ReCaptchaProvider } from 'next-recaptcha-v3'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { ContactForm } from './components/form'
 
 const title = 'Contact'
-const description = "Let's chat:"
+const description = "Let's chat:" 
 
 export const metadata: Metadata = createMetadata({
   title,
@@ -16,10 +14,10 @@ export const metadata: Metadata = createMetadata({
   ogText: 'Want to chat about something? Get in touch.',
 })
 
-const Contact = () => {
+const Contact = () => { 
   try {
     return (
-      <ReCaptchaProvider reCaptchaKey={env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}>
+      <>
         <Section className='gap-0'>
           <h1>{title}</h1>
           <p className='text-foreground-lighter'>{description}</p>
@@ -52,7 +50,7 @@ const Contact = () => {
             <ContactForm />
           </Suspense>
         </Section>
-      </ReCaptchaProvider>
+      </>
     )
   } catch (_error) {
     return <div>Error loading contact page.</div>
@@ -60,3 +58,4 @@ const Contact = () => {
 }
 
 export default Contact
+
