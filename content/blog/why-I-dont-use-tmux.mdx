@@ -1,0 +1,97 @@
+---
+title: "Why I Don't Need tmux (Tilix Is Enough)"
+description: 'How I customized Tilix to perfectly fit my workflow—no tmux required.'
+date: 08-01-2025
+---
+
+## Why I Don't Need tmux (and How I Made Tilix Perfect for Me)
+
+I've seen countless developers swear by `tmux`, praising its multiplexing, session management, and all the fancy features that make it a terminal powerhouse. But honestly? **I don't need it.**  
+
+I just need my terminal to **work as God intended**—fast, simple, and tailored to my workflow.
+
+## Enter Tilix: My Terminal of Choice
+
+I use **Tilix**, a tiling terminal emulator for Linux that already offers session and tab management without external dependencies or complex configuration. Out of the box, it's good—but not perfect. The default keybindings? **Confusing.**  
+
+So I changed them.
+
+<Callout>
+Tilix lets you customize shortcuts easily through its settings or by editing its configuration directly.  
+Here's how I shaped mine.
+</Callout>
+
+## My Custom Keybindings
+
+I configured Tilix so it behaves exactly how I want, without having to learn `tmux` commands or memorize cryptic key combos.  
+
+Here's my setup:
+
+- **Tabs**  
+  - ➕ Add Tab: `Ctrl + +`  
+  - ➖ Close Tab: `Ctrl + -`
+
+- **Sessions**  
+  - ➕ Add Session: `Alt + +`  
+  - ➖ Remove Session: `Alt + -`  
+  - 🔄 Switch Sessions: `Alt + Arrow Keys`
+
+- **Resize Current Session**  
+  - `Alt + 2 / 4 / 6 / 8` to resize down, left, right, or up.
+
+That's all I need—no panes within panes, no detached sessions to reconnect to later.  
+Just a **clean, tabbed terminal** where I can split and manage layouts intuitively.
+
+## My Tilix Configuration
+
+Here's the relevant part of my `tilix-settings.dconf`:
+
+```ini
+[/]
+prompt-on-close=true
+quake-specific-monitor=0
+tab-position='bottom'
+terminal-title-style='none'
+theme-variant='dark'
+use-tabs=true
+window-style='disable-csd-hide-toolbar'
+
+[keybindings]
+app-new-session='<Primary>KP_Add'
+session-add-auto='<Alt>KP_Add'
+session-add-down='disabled'
+session-add-right='disabled'
+session-close='<Primary>KP_Subtract'
+session-resize-terminal-down='<Alt>KP_2'
+session-resize-terminal-left='<Alt>KP_4'
+session-resize-terminal-right='<Alt>KP_6'
+session-resize-terminal-up='<Alt>KP_8'
+session-switch-to-terminal-down='<Alt>Down'
+session-switch-to-terminal-right='<Alt>Right'
+terminal-close='<Alt>KP_Subtract'
+win-switch-to-next-session='<Primary>Right'
+win-switch-to-previous-session='<Primary>Left'
+
+[profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d]
+background-transparency-percent=22
+default-size-columns=110
+default-size-rows=32
+draw-margin=80
+font='Fira Code 12'
+use-system-font=false
+visible-name='Default'
+````
+
+## Why This Works for Me
+
+I'm not saying `tmux` is bad. It's great if you need to attach/detach sessions across SSH, or if you live in the terminal full-time.
+
+But for my workflow, **Tilix with these keybindings is more than enough**:
+
+* ✅ **Simple** - No learning curve, no bloat.
+* ✅ **Visual** - I can see my tabs and sessions clearly.
+* ✅ **Efficient** - My fingers stay on the keyboard, and I can resize or navigate effortlessly.
+
+Sometimes, **less is more.** I don't need an over-engineered solution when a straightforward one fits like a glove.
+
+<MailingList />
